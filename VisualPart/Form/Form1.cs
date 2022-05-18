@@ -7,17 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SmetaCreator.Models;
 
 namespace SmetaCreator
 {
     public partial class Form1 : Form
     {
         private List<Executor> executors;
+        private Executor? selectedExecutor;
         public Form1()
         {
             InitializeComponent();
-            executors = new List<Executor>();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -26,13 +25,13 @@ namespace SmetaCreator
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(comboBox2.SelectedIndex == comboBox2.Items.Count - 1)
+            if(comboBox2.SelectedIndex == 0)
             {
                 AddNewExecutor();
             }
-            else
+            else if(comboBox2.SelectedIndex > 0)
             {
-
+                selectedExecutor = executors[comboBox2.SelectedIndex-1];
             }
         }
 
@@ -65,6 +64,7 @@ namespace SmetaCreator
             Executor executor = new (name);
             executors.Add(executor);
             form.Close();
+            RefreshExecutors();
         }
 
         private void AddNewWork()
@@ -94,6 +94,16 @@ namespace SmetaCreator
                 MessageBox.Show("Введите ценну в формате рубли.копейки");
             }
             form.Close();
+        }
+
+        private void RefreshExecutors()
+        {
+            comboBox2.Items.Clear();
+            comboBox2.Items.Add("Добавить");
+            foreach(Executor executor in executors)
+            {
+                comboBox2.Items.Add(executor.Name);
+            }
         }
     }
 }
