@@ -8,21 +8,41 @@ namespace SmetaCreator.Models
 {
     internal class Work
     {
-        private string? Name { get; set; }
-        private double Price { get; set; }
-        private int Amount { get; set; }
-        private double TotalPrice { get; set; }
+        public string? Name { get; set; }
+        public double Price
+        {
+            get
+            {
+                return Price;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    Price = value;
+                }
+            }
+        }
+        public int Amount
+        {
+            get
+            {
+                return Amount;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    Amount = value;
+                }
+            }
+        }
+        private double TotalPrice { get { return Price * Amount; } }
 
         public Work(string name, double price)
         {
             Name = name;
             Price = price;
-        }
-
-        private void PriceCount(int amount)
-        {
-            Amount = amount;
-            TotalPrice = Price * Amount;
         }
 
         private string ListBoxView()
