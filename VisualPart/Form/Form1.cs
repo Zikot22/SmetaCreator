@@ -14,11 +14,17 @@ namespace SmetaCreator
     public partial class Form1 : Form
     {
         private List<Executor> executors;
-        private Executor? selectedExecutor;
+        private int selectedExecutorIndex;
+
         public Form1()
         {
             executors = new List<Executor>();
             InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            selectedExecutorIndex = -1;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -33,17 +39,18 @@ namespace SmetaCreator
             }
             else if(comboBox2.SelectedIndex > 0)
             {
-                selectedExecutor = executors[comboBox2.SelectedIndex-1];
+                selectedExecutorIndex = comboBox2.SelectedIndex - 1;
+                RefreshWorks();
             }
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedIndex == comboBox1.Items.Count - 1)
+            if (comboBox1.SelectedIndex == 0 && selectedExecutorIndex >= 0)
             {
                 AddNewWork();
             }
-            else
+            else if(comboBox1.SelectedIndex > 0)
             {
 
             }
@@ -69,6 +76,16 @@ namespace SmetaCreator
             RefreshExecutors();
         }
 
+        private void RefreshExecutors()
+        {
+            comboBox2.Items.Clear();
+            comboBox2.Items.Add("Добавить");
+            foreach (Executor executor in executors)
+            {
+                comboBox2.Items.Add(executor.Name);
+            }
+        }
+
         private void AddNewWork()
         {
             comboBox1.SelectedIndex = -1;
@@ -87,24 +104,28 @@ namespace SmetaCreator
             double price;
             try
             {
-                price = double.Parse(stringPrice);
+                double.TryParse(stringPrice, out price);
                 Work work = new(name, price);
-                //реализовать добавление в список работ текущего исполнителя
+                executors[selectedExecutorIndex].Works.Add(work);
             }
             catch
             {
-                MessageBox.Show("Введите ценну в формате рубли.копейки");
+                MessageBox.Show("Введите ценну в формате рубли,копейки");
             }
             form.Close();
+            RefreshWorks();
         }
 
-        private void RefreshExecutors()
+        private void RefreshWorks()
         {
-            comboBox2.Items.Clear();
-            comboBox2.Items.Add("Добавить");
-            foreach(Executor executor in executors)
+            comboBox1.Items.Clear();
+            comboBox1.Items.Add("Добавить");
+            if(selectedExecutorIndex >= 0 && executors[selectedExecutorIndex] != null)
             {
-                comboBox2.Items.Add(executor.Name);
+                foreach (Work work in executors[selectedExecutorIndex].Works)
+                {
+                    comboBox1.Items.Add(work.Name);
+                }
             }
         }
     }

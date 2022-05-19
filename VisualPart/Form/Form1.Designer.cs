@@ -215,6 +215,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
             this.Text = "SmetaCreator";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);

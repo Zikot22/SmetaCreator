@@ -8,6 +8,7 @@ namespace SmetaCreator.Models
 {
     internal class Work
     {
+        public double price;
         public string? Name { get; set; }
         public double Price
         {
@@ -19,7 +20,7 @@ namespace SmetaCreator.Models
             {
                 if (value > 0)
                 {
-                    Price = value;
+                    price = value;
                 }
             }
         }
