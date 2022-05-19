@@ -15,9 +15,12 @@ namespace SmetaCreator
     {
         private List<Executor> executors;
         private int selectedExecutorIndex;
+        private int selectedWorkIndex;
+        private List<Work> worksInSmeta;
 
         public Form1()
         {
+            worksInSmeta = new List<Work>();
             executors = new List<Executor>();
             InitializeComponent();
         }
@@ -25,10 +28,22 @@ namespace SmetaCreator
         private void Form1_Load(object sender, EventArgs e)
         {
             selectedExecutorIndex = -1;
+            selectedWorkIndex = -1;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            try
+            {
+                executors[selectedExecutorIndex].Works[selectedWorkIndex].Amount = int.Parse(textBox3.Text);
+                worksInSmeta.Add(executors[selectedExecutorIndex].Works[selectedWorkIndex]);
+                listBox1.Items.Add(executors[selectedExecutorIndex].Works[selectedWorkIndex].ListBoxView());
+                textBox3.Clear();
+            }
+            catch
+            {
+                MessageBox.Show("Что-то пошло не так! Проверьте введённые данные");
+            }
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -40,6 +55,8 @@ namespace SmetaCreator
             else if(comboBox2.SelectedIndex > 0)
             {
                 selectedExecutorIndex = comboBox2.SelectedIndex - 1;
+                listBox1.Items.Clear();
+                worksInSmeta.Clear();
                 RefreshWorks();
             }
         }
@@ -52,7 +69,7 @@ namespace SmetaCreator
             }
             else if(comboBox1.SelectedIndex > 0)
             {
-
+                selectedWorkIndex = comboBox1.SelectedIndex - 1;
             }
 
         }
@@ -118,6 +135,7 @@ namespace SmetaCreator
 
         private void RefreshWorks()
         {
+            comboBox1.SelectedIndex = -1;
             comboBox1.Items.Clear();
             comboBox1.Items.Add("Добавить");
             if(selectedExecutorIndex >= 0 && executors[selectedExecutorIndex] != null)

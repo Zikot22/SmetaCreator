@@ -9,12 +9,13 @@ namespace SmetaCreator.Models
     internal class Work
     {
         public double price;
+        public int amount;
         public string? Name { get; set; }
         public double Price
         {
             get
             {
-                return Price;
+                return price;
             }
             set
             {
@@ -28,13 +29,13 @@ namespace SmetaCreator.Models
         {
             get
             {
-                return Amount;
+                return amount;
             }
             set
             {
                 if (value > 0)
                 {
-                    Amount = value;
+                    amount = value;
                 }
             }
         }
@@ -46,7 +47,7 @@ namespace SmetaCreator.Models
             Price = price;
         }
 
-        private string ListBoxView()
+        public string ListBoxView()
         {
             return $"{Name} {Price} рублей в количестве {Amount}. Стоимость: {TotalPrice}";
         }
