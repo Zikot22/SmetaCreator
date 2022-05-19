@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SmetaCreator.Models;
 
 namespace SmetaCreator
 {
@@ -16,6 +17,7 @@ namespace SmetaCreator
         private Executor? selectedExecutor;
         public Form1()
         {
+            executors = new List<Executor>();
             InitializeComponent();
         }
 
