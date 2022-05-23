@@ -4,16 +4,17 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SmetaCreator.Models;
+using System.IO;
 
 namespace SmetaCreator
 {
     public partial class Form1 : Form
     {
-        private List<Executor> executors;
+        private List<Executor>? executors;
         private int selectedExecutorIndex;
         private int selectedWorkIndex;
         private List<Work> worksInSmeta;
@@ -21,7 +22,6 @@ namespace SmetaCreator
         public Form1()
         {
             worksInSmeta = new List<Work>();
-            executors = new List<Executor>();
             InitializeComponent();
         }
 
@@ -29,6 +29,22 @@ namespace SmetaCreator
         {
             selectedExecutorIndex = -1;
             selectedWorkIndex = -1;
+            try
+            {
+                string? json = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/profiles.json");
+                executors = JsonSerializer.Deserialize<List<Executor>>(json);
+                RefreshExecutors();
+            }
+            catch
+            {
+                executors = new List<Executor>();
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            string json = JsonSerializer.Serialize(executors);
+            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/profiles.json", json);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -145,6 +161,13 @@ namespace SmetaCreator
                     comboBox1.Items.Add(work.Name);
                 }
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Smeta smeta = new(executors[selectedExecutorIndex], textBox1.Text, textBox2.Text, executors[selectedExecutorIndex].Works);
+            string json = JsonSerializer.Serialize(smeta);
+            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/smeta.json", json);
         }
     }
 }

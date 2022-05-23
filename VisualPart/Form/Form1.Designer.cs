@@ -182,6 +182,7 @@
             this.button2.TabIndex = 12;
             this.button2.Text = "Сохранить как";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // comboBox2
             // 
@@ -215,6 +216,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
             this.Text = "SmetaCreator";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
