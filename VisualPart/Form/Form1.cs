@@ -14,7 +14,7 @@ namespace SmetaCreator
 {
     public partial class Form1 : Form
     {
-        private List<Executor>? executors;
+        private List<Executor> executors;
         private int selectedExecutorIndex;
         private int selectedWorkIndex;
         private List<Work> worksInSmeta;
@@ -23,22 +23,22 @@ namespace SmetaCreator
         {
             worksInSmeta = new List<Work>();
             InitializeComponent();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            selectedExecutorIndex = -1;
-            selectedWorkIndex = -1;
             try
             {
-                string? json = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/profiles.json");
-                executors = JsonSerializer.Deserialize<List<Executor>>(json);
+                string json = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/profiles.json");
+                executors = JsonSerializer.Deserialize<List<Executor>>(json)!;
                 RefreshExecutors();
             }
             catch
             {
                 executors = new List<Executor>();
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            selectedExecutorIndex = -1;
+            selectedWorkIndex = -1;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
