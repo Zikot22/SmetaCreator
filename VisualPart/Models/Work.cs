@@ -6,12 +6,40 @@ using System.Threading.Tasks;
 
 namespace SmetaCreator.Models
 {
-    internal class Work
+    public class Work
     {
-        private string? Name { get; set; }
-        private double Price { get; set; }
-        private int Amount { get; set; }
-        private double TotalPrice { get; set; }
+        private double price;
+        private int amount;
+        public string? Name { get; set; }
+        public double Price
+        {
+            get
+            {
+                return price;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    price = value;
+                }
+            }
+        }
+        public int Amount
+        {
+            get
+            {
+                return amount;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    amount = value;
+                }
+            }
+        }
+        public double TotalPrice { get { return Price * Amount; } }
 
         public Work(string name, double price)
         {
@@ -19,13 +47,7 @@ namespace SmetaCreator.Models
             Price = price;
         }
 
-        private void PriceCount(int amount)
-        {
-            Amount = amount;
-            TotalPrice = Price * Amount;
-        }
-
-        private string ListBoxView()
+        public string ListBoxView()
         {
             return $"{Name} {Price} рублей в количестве {Amount}. Стоимость: {TotalPrice}";
         }

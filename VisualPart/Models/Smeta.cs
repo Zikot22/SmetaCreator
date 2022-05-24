@@ -8,10 +8,10 @@ namespace SmetaCreator.Models
 {
     internal class Smeta
     {
-        private string? ExecutorName { get; set; }
-        private string? Customer { get; set; }
-        private string? Adress { get; set; }
-        private List<Work> Works { get; set; }
+        public string? ExecutorName { get; set; }
+        public string? Customer { get; set; }
+        public string? Adress { get; set; }
+        public List<Work> Works { get; set; }
         public Smeta(Executor executor, string customer, string adress, List<Work> works)
         {
             ExecutorName = executor.Name;
@@ -21,3 +21,4 @@ namespace SmetaCreator.Models
         }
     }
 }
+ 
