@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmetaCreator.Models
 {
-    internal class Work
+    public class Work
     {
         public double price;
         public int amount;

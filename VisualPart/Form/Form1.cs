@@ -8,16 +8,17 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SmetaCreator.Models;
+using SmetaCreator.Utils;
 using System.IO;
 
 namespace SmetaCreator
 {
     public partial class Form1 : Form
     {
-        private List<Executor> executors;
-        private int selectedExecutorIndex;
+        public List<Executor> executors;
+        public int selectedExecutorIndex;
         private int selectedWorkIndex;
-        private List<Work> worksInSmeta;
+        public List<Work> worksInSmeta;
 
         public Form1()
         {
@@ -33,6 +34,7 @@ namespace SmetaCreator
             {
                 executors = new List<Executor>();
             }
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -66,7 +68,9 @@ namespace SmetaCreator
         {
             if(comboBox2.SelectedIndex == 0)
             {
-                AddNewExecutor();
+                selectedExecutorIndex = -1;
+                EditProfiles();
+                RefreshWorks();
             }
             else if(comboBox2.SelectedIndex > 0)
             {
@@ -79,9 +83,10 @@ namespace SmetaCreator
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedIndex == 0 && selectedExecutorIndex >= 0)
+            if (comboBox1.SelectedIndex == 0)
             {
-                AddNewWork();
+                selectedWorkIndex = -1;
+                EditProfiles();
             }
             else if(comboBox1.SelectedIndex > 0)
             {
@@ -90,26 +95,21 @@ namespace SmetaCreator
 
         }
 
-        private void AddNewExecutor()
+        private void EditProfiles()
         {
             comboBox2.SelectedIndex = -1;
-            Form form2 = new Form() { Width = 226, Height = 130 };
-            Label lbl = new Label() { Parent = form2, Location = new Point(5, 5), Text = "Введите имя исполнителя: ", Width = 200 };
-            TextBox txt = new TextBox() { Parent = form2, Location = new Point(5, 28), Width = 200, Height = 20 };
-            Button button = new Button() { Parent = form2, Location = new Point(105, 60), Width = 100, Height = 23, Text = "Создать" };
+            comboBox1.SelectedIndex = -1;
+            Form form2 = new Form2(executors);
             form2.Show();
-            button.Click += (sender, EventArgs) => { Button_NewExecutor(sender, EventArgs, txt.Text, form2); };
+            form2.FormClosed += Form2_Closed;
         }
 
-        private void Button_NewExecutor(object? sender, EventArgs e, string name, Form form)
+        private void Form2_Closed(object? sender, EventArgs e)
         {
-            Executor executor = new (name);
-            executors.Add(executor);
-            form.Close();
             RefreshExecutors();
         }
 
-        private void RefreshExecutors()
+        public void RefreshExecutors()
         {
             comboBox2.Items.Clear();
             comboBox2.Items.Add("Добавить");
@@ -117,36 +117,6 @@ namespace SmetaCreator
             {
                 comboBox2.Items.Add(executor.Name);
             }
-        }
-
-        private void AddNewWork()
-        {
-            comboBox1.SelectedIndex = -1;
-            Form form2 = new Form() { Width = 226, Height = 180 };
-            Label lbl1 = new Label() { Parent = form2, Location = new Point(5, 5), Text = "Введите название работы: ", Width = 200 };
-            TextBox txt1 = new TextBox() { Parent = form2, Location = new Point(5, 28), Width = 200, Height = 20 };
-            Label lbl2 = new Label() { Parent = form2, Location = new Point(5, 55), Text = "Введите цену за ед работы: ", Width = 200 };
-            TextBox txt2 = new TextBox() { Parent = form2, Location = new Point(5, 78), Width = 200, Height = 20 };
-            Button button = new Button() { Parent = form2, Location = new Point(105, 110), Width = 100, Height = 23, Text = "Создать" };
-            form2.Show();
-            button.Click += (sender, EventArgs) => { Button_NewWork(sender, EventArgs, txt1.Text, txt2.Text, form2); };
-        }
-
-        private void Button_NewWork(object? sender, EventArgs e, string name, string stringPrice, Form form)
-        {
-            double price;
-            try
-            {
-                double.TryParse(stringPrice, out price);
-                Work work = new(name, price);
-                executors[selectedExecutorIndex].Works.Add(work);
-            }
-            catch
-            {
-                MessageBox.Show("Введите ценну в формате рубли,копейки");
-            }
-            form.Close();
-            RefreshWorks();
         }
 
         private void RefreshWorks()

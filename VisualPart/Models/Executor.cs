@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmetaCreator.Models
 {
-    internal class Executor
+    public class Executor
     {
         public string? Name { get; set; }
         public List<Work> Works { get; set; }
