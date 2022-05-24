@@ -8,8 +8,8 @@ namespace SmetaCreator.Models
 {
     public class Work
     {
-        public double price;
-        public int amount;
+        private double price;
+        private int amount;
         public string? Name { get; set; }
         public double Price
         {
@@ -39,7 +39,7 @@ namespace SmetaCreator.Models
                 }
             }
         }
-        private double TotalPrice { get { return Price * Amount; } }
+        public double TotalPrice { get { return Price * Amount; } }
 
         public Work(string name, double price)
         {
