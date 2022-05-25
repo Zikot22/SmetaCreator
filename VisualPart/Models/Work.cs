@@ -47,6 +47,8 @@ namespace SmetaCreator.Models
             Price = price;
         }
 
+        public Work() { }
+
         public string ListBoxView()
         {
             return $"{Name} {Price} рублей в количестве {Amount}. Стоимость: {TotalPrice}";

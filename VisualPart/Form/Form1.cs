@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text.Json;
+using System.Xml.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SmetaCreator.Models;
@@ -53,8 +54,8 @@ namespace SmetaCreator
         {
             try
             {
-                executors[selectedExecutorIndex].Works[selectedWorkIndex].Amount = int.Parse(textBox3.Text);
-                worksInSmeta.Add(executors[selectedExecutorIndex].Works[selectedWorkIndex]);
+                worksInSmeta.Add(new Work(executors[selectedExecutorIndex].Works[selectedWorkIndex].Name, executors[selectedExecutorIndex].Works[selectedWorkIndex].Price));
+                worksInSmeta.Last().Amount = int.Parse(textBox3.Text);
                 listBox1.Items.Add(executors[selectedExecutorIndex].Works[selectedWorkIndex].ListBoxView());
                 textBox3.Clear();
             }
@@ -135,9 +136,16 @@ namespace SmetaCreator
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Smeta smeta = new(executors[selectedExecutorIndex], textBox1.Text, textBox2.Text, executors[selectedExecutorIndex].Works);
-            string json = JsonSerializer.Serialize(smeta);
-            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/smeta.json", json);
+            List<Smeta> smetas = new List<Smeta>();
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Smeta>));
+            Smeta smeta = new(executors[selectedExecutorIndex], textBox1.Text, textBox2.Text, worksInSmeta);
+            smetas.Add(smeta);
+
+            using (FileStream fs = new FileStream($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/smeta.xml", FileMode.Create))
+            {
+                xmlSerializer.Serialize(fs, smetas);
+            }
+            Class1.Method1();
         }
     }
 }

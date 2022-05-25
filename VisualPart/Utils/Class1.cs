@@ -14,11 +14,11 @@ namespace SmetaCreator.Utils
    
         public static void Method1()
         {
-            /*Report r = new Report();
+            Report r = new Report();
             r.Load($"C:/Users/{Environment.UserName}/Desktop/Study/Untitled.frx");
             PDFSimpleExport p = new PDFSimpleExport();
             r.Prepare();
-            p.Export(r, "C:/Users/{Environment.UserName}/Desktop/Study/pdf1.pdf");*/
-          }
+            p.Export(r, $"C:/Users/{Environment.UserName}/Desktop/Study/smeta.pdf");
+        }
     }
 }
