@@ -53,5 +53,12 @@ namespace SmetaCreator.Models
         {
             return $"{Name} {Price} рублей в количестве {Amount}. Стоимость: {TotalPrice}";
         }
+
+        public Work Clone(int amount)
+        {
+            Work work = new Work(this.Name!, this.Price);
+            work.Amount = amount;
+            return work;
+        }
     }
 }

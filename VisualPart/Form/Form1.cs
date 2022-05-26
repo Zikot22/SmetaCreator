@@ -54,9 +54,8 @@ namespace SmetaCreator
         {
             try
             {
-                worksInSmeta.Add(new Work(executors[selectedExecutorIndex].Works[selectedWorkIndex].Name, executors[selectedExecutorIndex].Works[selectedWorkIndex].Price));
-                worksInSmeta.Last().Amount = int.Parse(textBox3.Text);
-                listBox1.Items.Add(executors[selectedExecutorIndex].Works[selectedWorkIndex].ListBoxView());
+                worksInSmeta.Add(executors[selectedExecutorIndex].Works[selectedWorkIndex].Clone(int.Parse(textBox3.Text)));
+                listBox1.Items.Add(worksInSmeta.Last().ListBoxView());
                 textBox3.Clear();
             }
             catch
