@@ -5,16 +5,15 @@ using FastReport.Export.PdfSimple;
 
 namespace SmetaCreator.Utils
 {
-    public class Class1
+    public class ReportCreator
     {
-   
-        public static void Method1()
+        public static void CreateReport(string path)
         {
             Report r = new Report();
             r.Load($"C:/Users/{Environment.UserName}/Desktop/Study/Untitled.frx");
             PDFSimpleExport p = new PDFSimpleExport();
             r.Prepare();
-            p.Export(r, $"C:/Users/{Environment.UserName}/Desktop/Study/smeta.pdf");
+            p.Export(r, path + "/smeta.pdf");
         }
     }
 }

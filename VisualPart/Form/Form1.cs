@@ -135,12 +135,18 @@ namespace SmetaCreator
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Smeta>));
             Smeta smeta = new(executors[selectedExecutorIndex], textBox1.Text, textBox2.Text, worksInSmeta);
             smetas.Add(smeta);
-
             using (FileStream fs = new FileStream($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/smeta.xml", FileMode.Create))
             {
                 xmlSerializer.Serialize(fs, smetas);
             }
-            Class1.Method1();
+
+            var fbd = new FolderBrowserDialog();
+            string path = "";
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                path = fbd.SelectedPath;
+            }
+            ReportCreator.CreateReport(path);
         }
     }
 }
