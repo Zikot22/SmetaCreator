@@ -23,7 +23,7 @@ namespace SmetaCreator
             InitializeComponent();
             try
             {
-                string json = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/profiles.json");
+                string json = File.ReadAllText("profiles.json");
                 executors = JsonSerializer.Deserialize<List<Executor>>(json)!;
                 RefreshExecutors();
             }
@@ -43,7 +43,7 @@ namespace SmetaCreator
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             string json = JsonSerializer.Serialize(executors);
-            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/profiles.json", json);
+            File.WriteAllText("profiles.json", json);
         }
          
         private void button1_Click(object sender, EventArgs e)
@@ -135,7 +135,7 @@ namespace SmetaCreator
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Smeta>));
             Smeta smeta = new(executors[selectedExecutorIndex], textBox1.Text, textBox2.Text, worksInSmeta);
             smetas.Add(smeta);
-            using (FileStream fs = new FileStream($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/smeta.xml", FileMode.Create))
+            using (FileStream fs = new FileStream("smeta.xml", FileMode.Create))
             {
                 xmlSerializer.Serialize(fs, smetas);
             }

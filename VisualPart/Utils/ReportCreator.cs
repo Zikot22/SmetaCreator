@@ -11,7 +11,7 @@ namespace SmetaCreator.Utils
         public static void CreateReport(string path)
         {
             Report r = new Report();
-            r.Load($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/blankReport.frx");
+            r.Load(Path.Combine(Environment.CurrentDirectory.ToString(), "blankReport.frx"));
             PDFSimpleExport p = new PDFSimpleExport();
             r.Prepare();
             p.Export(r, Path.Combine(path, "smeta.pdf"));
