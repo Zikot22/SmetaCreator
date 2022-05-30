@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/16/2022 14:30:35" ReportInfo.Modified="05/30/2022 15:44:06" ReportInfo.CreatorVersion="2022.2.9.0">
+  <Dictionary>
+    <XmlDataConnection Name="Smetas" ConnectionString="rijcmlq6+qsjfYFgDPUPHJJ8ftfg15dRduDHeFrtO7v8W6xacc=">
+      <TableDataSource Name="Smeta1" DataType="System.Int32" Enabled="true" TableName="Smeta">
+        <Column Name="ExecutorName" DataType="System.String"/>
+        <Column Name="Customer" DataType="System.String"/>
+        <Column Name="Adress" DataType="System.String"/>
+        <Column Name="Smeta_Id" DataType="System.Int32"/>
+      </TableDataSource>
+      <TableDataSource Name="Works" DataType="System.Int32" Enabled="true" TableName="Works">
+        <Column Name="Works_Id" DataType="System.Int32"/>
+        <Column Name="Smeta_Id" DataType="System.Int32"/>
+      </TableDataSource>
+      <TableDataSource Name="Work" DataType="System.Int32" Enabled="true" TableName="Work">
+        <Column Name="Name" DataType="System.String"/>
+        <Column Name="Price" DataType="System.Double"/>
+        <Column Name="Amount" DataType="System.Int32"/>
+        <Column Name="Works_Id" DataType="System.Int32"/>
+      </TableDataSource>
+    </XmlDataConnection>
+    <Relation Name="Works_Work" ParentDataSource="Works" ChildDataSource="Work" ParentColumns="Works_Id" ChildColumns="Works_Id" Enabled="true"/>
+    <Relation Name="Smeta_Works" ParentDataSource="null" ChildDataSource="null" ParentColumns="Smeta_Id" ChildColumns="Smeta_Id" Enabled="true"/>
+    <Relation Name="Works_Work" ParentDataSource="Works" ChildDataSource="Work" ParentColumns="Works_Id" ChildColumns="Works_Id" Enabled="true"/>
+    <Relation Name="Smeta_Works" ParentDataSource="Smeta1" ChildDataSource="Works" ParentColumns="Smeta_Id" ChildColumns="Smeta_Id" Enabled="true"/>
+    <Total Name="Total" Expression="[Work.Price]*[Work.Amount];" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="28.35">
+      <TextObject Name="Text11" Left="9.45" Top="9.45" Width="94.5" Height="18.9" Text="Смета" Font="Arial, 10pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="32.35" Width="718.2" Height="18.9"/>
+    <DataBand Name="Data4" Top="55.25" Width="718.2" Height="56.7" DataSource="Smeta1">
+      <TextObject Name="Text17" Left="9.45" Width="491.4" Height="47.25" Text="Исполнитель: [Smeta1.ExecutorName]&#13;&#10;Заказчик: [Smeta1.Customer]&#13;&#10;Адрес объекта: [Smeta1.Adress]" Font="Arial, 10pt"/>
+    </DataBand>
+    <DataBand Name="Data3" Top="115.95" Width="718.2" Height="18.9">
+      <TextObject Name="Text7" Left="9.45" Width="151.2" Height="18.9" Border.Lines="All" Text="Виды работ" HorzAlign="Center" Font="Arial, 10pt"/>
+      <TextObject Name="Text8" Left="160.65" Width="94.5" Height="18.9" Border.Lines="All" Text="Цена за ед" HorzAlign="Center" Font="Arial, 10pt"/>
+      <TextObject Name="Text9" Left="255.15" Width="94.5" Height="18.9" Border.Lines="All" Text="Объём" HorzAlign="Center" Font="Arial, 10pt"/>
+      <TextObject Name="Text10" Left="349.65" Width="141.75" Height="18.9" Border.Lines="All" Text="Общая стоимость" HorzAlign="Center" Font="Arial, 10pt"/>
+    </DataBand>
+    <DataBand Name="Data1" Top="138.85" Width="718.2" Height="18.9" DataSource="Work">
+      <TextObject Name="Text1" Left="9.45" Width="151.2" Height="18.9" Border.Lines="All" GrowToBottom="true" Text="[Work.Name]" Font="Arial, 10pt"/>
+      <TextObject Name="Text2" Left="160.65" Width="94.5" Height="18.9" Border.Lines="All" Text="[Work.Price]" HorzAlign="Center" Font="Arial, 10pt"/>
+      <TextObject Name="Text3" Left="255.15" Width="94.5" Height="18.9" Border.Lines="All" Text="[Work.Amount]" HorzAlign="Center" Font="Arial, 10pt"/>
+      <TextObject Name="Text4" Left="349.65" Width="141.75" Height="18.9" Border.Lines="All" Text="[[Work.Price]*[Work.Amount]]" HorzAlign="Center" Font="Arial, 10pt"/>
+    </DataBand>
+    <DataBand Name="Data2" Top="161.75" Width="718.2" Height="18.9">
+      <TextObject Name="Text12" Left="9.45" Width="151.2" Height="18.9" Border.Lines="Left, Top, Bottom" Text="Итог:" Font="Arial, 10pt"/>
+      <TextObject Name="Text13" Left="349.65" Width="141.75" Height="18.9" Border.Lines="Right, Top, Bottom" Text="[Total]" HorzAlign="Center" Font="Arial, 10pt"/>
+      <TextObject Name="Text14" Left="160.65" Width="47.25" Border.Lines="All" Font="Arial, 10pt"/>
+      <TextObject Name="Text15" Left="160.65" Width="94.5" Height="18.9" Border.Lines="Top, Bottom" Font="Arial, 10pt"/>
+      <TextObject Name="Text16" Left="255.15" Width="94.5" Height="18.9" Border.Lines="Top, Bottom" Font="Arial, 10pt"/>
+    </DataBand>
+  </ReportPage>
+</Report>

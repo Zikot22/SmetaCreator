@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SmetaCreator.Models
 {
-    internal class Smeta
+    [Serializable]
+    public class Smeta
     {
         public string? ExecutorName { get; set; }
         public string? Customer { get; set; }
@@ -19,6 +20,8 @@ namespace SmetaCreator.Models
             Adress = adress;
             Works = works;
         }
+
+        public Smeta() { }
     }
 }
  

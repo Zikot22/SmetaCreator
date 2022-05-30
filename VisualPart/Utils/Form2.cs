@@ -1,14 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using SmetaCreator.Models;
-using SmetaCreator;
 
 namespace SmetaCreator.Utils
 {
@@ -34,6 +27,7 @@ namespace SmetaCreator.Utils
             {
                 listBox1.Items.Add(executor.Name!);
             }
+            textBox1.Clear();
         }
 
         private void RefreshWorks()
@@ -45,6 +39,8 @@ namespace SmetaCreator.Utils
                 {
                     listBox2.Items.Add(work.Name + " " + work.Price.ToString() + " руб за ед");
                 }
+                textBox2.Clear();
+                textBox3.Clear();
             }
             catch
             {
@@ -59,18 +55,36 @@ namespace SmetaCreator.Utils
         //добавление исполнителя
         private void button1_Click(object sender, EventArgs e)
         {
-            executors.Add(new Executor(textBox1.Text));
-            RefreshExecutors();
+            if (textBox1.Text != "" && textBox1.Text.ToCharArray()[0] != ' ')
+            {
+                executors.Add(new Executor(textBox1.Text));
+                RefreshExecutors();
+            }
+            else
+            {
+                MessageBox.Show("Введите корректное имя исполнителя");
+            }
         }
 
         //изменение исполнителя
         private void button2_Click(object sender, EventArgs e)
         {
-            if(listBox1.SelectedIndex >= 0)
+            if (listBox1.SelectedIndex >= 0)
             {
-                executors[listBox1.SelectedIndex].Name = textBox1.Text;
+                if (textBox1.Text != "" && textBox1.Text.ToCharArray()[0] != ' ')
+                {
+                    executors[listBox1.SelectedIndex].Name = textBox1.Text;
+                    RefreshExecutors();
+                }
+                else
+                {
+                    MessageBox.Show("Введите корректное имя исполнителя");
+                }
             }
-            RefreshExecutors();
+            else
+            {
+                MessageBox.Show("Выберите исполнителя");
+            }
         }
 
         //удаление исполнителя
@@ -79,8 +93,14 @@ namespace SmetaCreator.Utils
             if(listBox1.SelectedIndex >= 0)
             {
                 executors.RemoveAt(listBox1.SelectedIndex);
+                RefreshExecutors();
+                listBox2.Items.Clear();
+                RefreshWorks();
             }
-            RefreshExecutors();
+            else
+            {
+                MessageBox.Show("Выберите исполнителя");
+            }
         }
 
         //добавление работы
@@ -92,8 +112,15 @@ namespace SmetaCreator.Utils
                 if (listBox1.SelectedIndex >= 0)
                 {
                     double.TryParse(textBox3.Text, out price);
-                    Work work = new(textBox2.Text, price);
-                    executors[listBox1.SelectedIndex].Works.Add(work);
+                    if(textBox2.Text != "" && textBox2.Text.ToCharArray()[0] != ' ')
+                    {
+                        Work work = new(textBox2.Text, price);
+                        executors[listBox1.SelectedIndex].Works.Add(work);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Введите корректное название работы");
+                    }
                 }
                 else
                 {
@@ -115,15 +142,25 @@ namespace SmetaCreator.Utils
                 double price;
                 try
                 {
-                    double.TryParse(textBox3.Text, out price);
-                    executors[listBox1.SelectedIndex].Works[listBox2.SelectedIndex].Price = price;
-                    executors[listBox1.SelectedIndex].Works[listBox2.SelectedIndex].Name = textBox2.Text;
+                    if (textBox3.Text != "")
+                    {
+                        double.TryParse(textBox3.Text, out price);
+                        executors[listBox1.SelectedIndex].Works[listBox2.SelectedIndex].Price = price;
+                    }
                 }
                 catch
                 {
                     MessageBox.Show("Введите ценну в формате рубли,копейки");
                 }
+                if(textBox2.Text != "" && textBox2.Text.ToCharArray()[0] != ' ')
+                {
+                    executors[listBox1.SelectedIndex].Works[listBox2.SelectedIndex].Name = textBox2.Text;
+                }
                 RefreshWorks();
+            }
+            else
+            {
+                MessageBox.Show("Выберите работу");
             }
         }
         
@@ -134,6 +171,10 @@ namespace SmetaCreator.Utils
             {
                 executors[listBox1.SelectedIndex].Works.RemoveAt(listBox2.SelectedIndex);
                 RefreshWorks();
+            }
+            else
+            {
+                MessageBox.Show("Выберите работу");
             }
         }
     }

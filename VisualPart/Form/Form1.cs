@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
+using System.Xml.Serialization;
 using System.Windows.Forms;
 using SmetaCreator.Models;
 using SmetaCreator.Utils;
@@ -26,7 +23,7 @@ namespace SmetaCreator
             InitializeComponent();
             try
             {
-                string json = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/profiles.json");
+                string json = File.ReadAllText("profiles.json");
                 executors = JsonSerializer.Deserialize<List<Executor>>(json)!;
                 RefreshExecutors();
             }
@@ -46,16 +43,15 @@ namespace SmetaCreator
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             string json = JsonSerializer.Serialize(executors);
-            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/profiles.json", json);
+            File.WriteAllText("profiles.json", json);
         }
-
+         
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                executors[selectedExecutorIndex].Works[selectedWorkIndex].Amount = int.Parse(textBox3.Text);
-                worksInSmeta.Add(executors[selectedExecutorIndex].Works[selectedWorkIndex]);
-                listBox1.Items.Add(executors[selectedExecutorIndex].Works[selectedWorkIndex].ListBoxView());
+                worksInSmeta.Add(executors[selectedExecutorIndex].Works[selectedWorkIndex].Clone(int.Parse(textBox3.Text)));
+                listBox1.Items.Add(worksInSmeta.Last().ListBoxView());
                 textBox3.Clear();
             }
             catch
@@ -135,9 +131,22 @@ namespace SmetaCreator
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Smeta smeta = new(executors[selectedExecutorIndex], textBox1.Text, textBox2.Text, executors[selectedExecutorIndex].Works);
-            string json = JsonSerializer.Serialize(smeta);
-            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/smeta.json", json);
+            List<Smeta> smetas = new List<Smeta>();
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Smeta>));
+            Smeta smeta = new(executors[selectedExecutorIndex], textBox1.Text, textBox2.Text, worksInSmeta);
+            smetas.Add(smeta);
+            using (FileStream fs = new FileStream("smeta.xml", FileMode.Create))
+            {
+                xmlSerializer.Serialize(fs, smetas);
+            }
+
+            var fbd = new FolderBrowserDialog();
+            string path = "";
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                path = fbd.SelectedPath;
+            }
+            ReportCreator.CreateReport(path);
         }
     }
 }

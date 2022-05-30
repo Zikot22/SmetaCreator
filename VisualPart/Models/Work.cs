@@ -47,9 +47,18 @@ namespace SmetaCreator.Models
             Price = price;
         }
 
+        public Work() { }
+
         public string ListBoxView()
         {
             return $"{Name} {Price} рублей в количестве {Amount}. Стоимость: {TotalPrice}";
+        }
+
+        public Work Clone(int amount)
+        {
+            Work work = new Work(this.Name!, this.Price);
+            work.Amount = amount;
+            return work;
         }
     }
 }

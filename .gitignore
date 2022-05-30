@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /VisualPart/Utils/profiles.json
 /VisualPart/Utils/smeta.json
+/VisualPart/Utils/smeta.xml
