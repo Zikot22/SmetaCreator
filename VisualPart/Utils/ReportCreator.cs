@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using FastReport;
 using FastReport.Export.Image;
 using FastReport.Export.PdfSimple;
@@ -13,7 +14,7 @@ namespace SmetaCreator.Utils
             r.Load($"C:/Users/{Environment.UserName}/Desktop/Study/Untitled.frx");
             PDFSimpleExport p = new PDFSimpleExport();
             r.Prepare();
-            p.Export(r, path + "/smeta.pdf");
+            p.Export(r, Path.Combine(path, "smeta.pdf"));
         }
     }
 }
