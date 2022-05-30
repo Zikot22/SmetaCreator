@@ -45,7 +45,7 @@ namespace SmetaCreator
             string json = JsonSerializer.Serialize(executors);
             File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}/../../../Utils/profiles.json", json);
         }
-
+         
         private void button1_Click(object sender, EventArgs e)
         {
             try
