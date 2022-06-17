@@ -51,7 +51,7 @@ namespace SmetaCreator.Models
 
         public string ListBoxView()
         {
-            return $"{Name} {Price} рублей в количестве {Amount}. Стоимость: {TotalPrice}";
+            return $"{Name} {Price} руб в объёме {Amount}. Стоимость: {TotalPrice} руб";
         }
 
         public Work Clone(int amount)

@@ -45,7 +45,8 @@ namespace SmetaCreator
             string json = JsonSerializer.Serialize(executors);
             File.WriteAllText("profiles.json", json);
         }
-         
+        
+        // добавление
         private void button1_Click(object sender, EventArgs e)
         {
             try
@@ -58,6 +59,42 @@ namespace SmetaCreator
             {
                 MessageBox.Show("Что-то пошло не так! Проверьте введённые данные");
             }
+        }
+
+        //редактирование
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                worksInSmeta[listBox1.SelectedIndex] = executors[selectedExecutorIndex].Works[selectedWorkIndex].Clone(int.Parse(textBox3.Text));
+                listBox1.Items[listBox1.SelectedIndex] = worksInSmeta[listBox1.SelectedIndex].ListBoxView();
+                textBox3.Clear();
+            }
+            catch
+            {
+                MessageBox.Show("Что-то пошло не так! Проверьте введённые данные, \n выберите работу для редактирования и попробуйте снова");
+            }
+        }
+
+        //удаление
+        private void button4_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                worksInSmeta.Remove(worksInSmeta[listBox1.SelectedIndex]);
+                listBox1.Items.RemoveAt(listBox1.SelectedIndex);
+            }
+            catch
+            {
+                MessageBox.Show("Что-то пошло не так! Проверьте введённые данные, \n выберите работу для удаления и попробуйте снова");
+            }
+        }
+
+        //очистка
+        private void button5_Click(object sender, EventArgs e)
+        {
+            worksInSmeta.Clear();
+            listBox1.Items.Clear();
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -133,20 +170,36 @@ namespace SmetaCreator
         {
             List<Smeta> smetas = new List<Smeta>();
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Smeta>));
-            Smeta smeta = new(executors[selectedExecutorIndex], textBox1.Text, textBox2.Text, worksInSmeta);
-            smetas.Add(smeta);
+            Smeta smeta;
+            try
+            {
+                smeta = new(executors[selectedExecutorIndex], textBox1.Text, textBox2.Text, worksInSmeta);
+                smetas.Add(smeta);
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка выбора профиля");
+                return;
+            }
+
             using (FileStream fs = new FileStream("smeta.xml", FileMode.Create))
             {
                 xmlSerializer.Serialize(fs, smetas);
             }
 
-            var fbd = new FolderBrowserDialog();
-            string path = "";
-            if (fbd.ShowDialog() == DialogResult.OK)
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "PDF file (*.pdf)|*.pdf|HTML file (*.html)|*.html|PNG image (*.png)|*.png| JPEG image (*.jpeg)|*.jpeg";
+            if (sfd.ShowDialog() == DialogResult.OK)
             {
-                path = fbd.SelectedPath;
+                using(var stream = sfd.OpenFile())
+                {
+                    ReportCreator.CreateReport(stream, sfd.FilterIndex);
+                }
             }
-            ReportCreator.CreateReport(path);
+
+            textBox1.Clear();
+            textBox2.Clear();
+            listBox1.Items.Clear();
         }
     }
 }
